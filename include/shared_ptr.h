@@ -57,6 +57,8 @@ public:
     T* operator ->() { return ptr; }
 
     T& operator [](int const& index) { return ptr[index]; }
+    
+    T operator [](int const& index) const { return ptr[index]; }
 
     ~shared_ptr()
     {
