@@ -53,6 +53,7 @@ public:
     }
 
     T& operator *() { return *ptr; }
+    T operator *() const { return *ptr; }
 
     T* operator ->() { return ptr; }
 
