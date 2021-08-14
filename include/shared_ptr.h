@@ -65,7 +65,7 @@ public:
     {
         if (reference->decrease() == 0)
         {
-            delete ptr;
+            delete[] ptr;
             delete reference;
 
             ptr = nullptr;
