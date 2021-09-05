@@ -82,8 +82,7 @@ bool is_left_alligned(node* n)
     return n == n->parent->left;
 }
 
-[[deprecated ("please update the name of this function")]]
-node* x(node* n)
+node* climb(node* n)
 {
     node* root{root_node(n)};
     return *root > *n ? root : nullptr;
@@ -97,7 +96,7 @@ node* in_order_successor(node* n)
     
     if (u == n)
     {
-        return is_left_alligned(n) ? n->parent : x(n);
+        return is_left_alligned(n) ? n->parent : climb(n);
     }
     else return u;
 }
