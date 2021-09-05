@@ -12,17 +12,18 @@ public:
     node(node&& n) noexcept : key{n.key}, left{n.left}, right{n.right}, parent{n.parent}
     {
         n.key = 0;
-        n.left = nullptr;
-        n.right = nullptr;
-        n.parent = nullptr;
+        n.left = n.right = n.parent = nullptr;
     }
+    
     node& operator =(node n)
     {
         _swap(*this, n);
         
         return *this;
     }
+    
     bool operator>(node const& n) const { return key > n.key; }
+    
     friend void _swap(node& a, node& b)
     {
         std::swap(a.key, b.key);
@@ -38,7 +39,9 @@ class b_tree
 {
 public:
     node* root;
+    
     b_tree() : root{nullptr} {}
+    
     void _cleanup(node* n)
     {
         if (!n) return;
@@ -50,12 +53,14 @@ public:
         
         delete n;
     }
+    
     void cleanup()
     {
         _cleanup(root);
         
         root = nullptr;
     }
+    
     ~b_tree()
     {
         cleanup();
@@ -72,7 +77,7 @@ node* root_node(node* n)
     return n->parent ? root_node(n->parent) : n;
 }
 
-bool is_left_alligned_to_parent(node* n)
+bool is_left_alligned(node* n)
 {
     return n == n->parent->left;
 }
@@ -92,7 +97,7 @@ node* in_order_successor(node* n)
     
     if (u == n)
     {
-        return is_left_alligned_to_parent(n) ? n->parent : x(n);
+        return is_left_alligned(n) ? n->parent : x(n);
     }
     else return u;
 }
