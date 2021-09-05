@@ -9,7 +9,7 @@ public:
     node() : key{}, left{nullptr}, right{nullptr}, parent{nullptr} {}
     explicit node(int d) : key{d}, left{nullptr}, right{nullptr}, parent{nullptr} {}
     node(node const& n) : key{n.key}, left{n.left}, right{n.right}, parent{nullptr} {}
-    node(node&& n) : key{n.key}, left{n.left}, right{n.right}, parent{n.parent}
+    node(node&& n) noexcept : key{n.key}, left{n.left}, right{n.right}, parent{n.parent}
     {
         n.key = 0;
         n.left = nullptr;
