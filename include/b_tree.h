@@ -2,13 +2,13 @@ class node
 {
 public:    
     int key{};
-    node* left;
-    node* right;
-    node* parent;
+    node* left{nullptr};
+    node* right{nullptr};
+    node* parent{nullptr};
     
-    node() : key{}, left{nullptr}, right{nullptr}, parent{nullptr} {}
-    explicit node(int d) : key{d}, left{nullptr}, right{nullptr}, parent{nullptr} {}
-    node(node const& n) : key{n.key}, left{n.left}, right{n.right}, parent{nullptr} {}
+    node() = default;
+    explicit node(int d) : key{d} {}
+    node(node const& n) : key{n.key}, left{n.left}, right{n.right}, parent{n.parent} {}
     node(node&& n) noexcept : key{n.key}, left{n.left}, right{n.right}, parent{n.parent}
     {
         n.key = 0;
@@ -22,7 +22,7 @@ public:
         
         return *this;
     }
-    bool operator >(node const& n) { return key > n.key; }
+    bool operator>(node const& n) const { return key > n.key; }
     friend void _swap(node& a, node& b)
     {
         std::swap(a.key, b.key);
@@ -39,54 +39,52 @@ class b_tree
 public:
     node* root;
     b_tree() : root{nullptr} {}
-    void _cleanup(node*& n)
+    void _cleanup(node* n)
     {
         if (!n) return;
 
-        cleanup(n->left);
-        cleanup(n->right);
+        _cleanup(n->left);
+        _cleanup(n->right);
 
-        n->left = nullptr;
-        n->right = nullptr;
-        n->parent = nullptr;
+        n->left = n->right = n->parent = nullptr;
         
         delete n;
     }
-    void cleanup(node*& n)
+    void cleanup()
     {
-        _cleanup(n);
+        _cleanup(root);
         
-        n = nullptr;
+        root = nullptr;
     }
     ~b_tree()
     {
-        cleanup(root);
+        cleanup();
     }
 };
 
-node* leftmost_key(node*& n)
+node* leftmost_key(node* n)
 {
     return n->left ? leftmost_key(n->left) : n;
 }
 
-node* root_node(node*& n)
+node* root_node(node* n)
 {
     return n->parent ? root_node(n->parent) : n;
 }
 
-bool is_left_alligned_to_parent(node*& n)
+bool is_left_alligned_to_parent(node* n)
 {
     return n == n->parent->left;
 }
 
 [[deprecated ("please update the name of this function")]]
-node* x(node*& n)
+node* x(node* n)
 {
     node* root{root_node(n)};
     return *root > *n ? root : nullptr;
 }
 
-node* in_order_successor(node*& n)
+node* in_order_successor(node* n)
 {
     if (!n) return nullptr;
     
