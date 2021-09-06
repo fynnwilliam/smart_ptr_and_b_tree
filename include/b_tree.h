@@ -2,16 +2,18 @@ class node
 {
 public:    
     int key{};
+    int height{};
     node* left{nullptr};
     node* right{nullptr};
     node* parent{nullptr};
     
     node() = default;
     explicit node(int d) : key{d} {}
-    node(node const& n) : key{n.key}, left{n.left}, right{n.right}, parent{n.parent} {}
-    node(node&& n) noexcept : key{n.key}, left{n.left}, right{n.right}, parent{n.parent}
+    node(node const& n) : key{n.key}, height{n.height}, left{n.left}, right{n.right}, parent{n.parent} {}
+    node(node&& n) noexcept : key{n.key}, height{n.height}, left{n.left}, right{n.right}, parent{n.parent}
     {
         n.key = 0;
+        n.height = 0;
         n.left = n.right = n.parent = nullptr;
     }
     
@@ -29,6 +31,7 @@ public:
         std::swap(a.key, b.key);
         std::swap(a.left, b.left);
         std::swap(a.right, b.right);
+        std::swap(a.height, b.height);
         std::swap(a.parent, b.parent);
     }
         
