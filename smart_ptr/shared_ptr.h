@@ -31,7 +31,7 @@ public:
         reference->increase();
     }
 
-    shared_ptr<T>& operator =(shared_ptr<T> const& s)
+    shared_ptr<T>& operator=(shared_ptr<T> const& s)
     {
         if (this != &s)
         {
@@ -52,13 +52,12 @@ public:
         return *this;
     }
 
-    T& operator*() { return *ptr; }
+    T&       operator*()       { return *ptr; }
     T const& operator*() const { return *ptr; }
 
     T* operator->() { return ptr; }
 
-    T& operator[](int const& index) { return ptr[index]; }
-    
+    T&       operator[](int const& index)       { return ptr[index]; }
     T const& operator[](int const& index) const { return ptr[index]; }
 
     ~shared_ptr()
