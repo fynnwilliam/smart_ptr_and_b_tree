@@ -21,6 +21,7 @@ public:
 
 class b_tree {
 private:
+
   void _cleanup(node *n) {
     if (!n) return;
 
@@ -39,6 +40,7 @@ public:
   node *root;
 
   b_tree() : root{nullptr} {}
+  explicit b_tree(int r) : root{new node{r}} {}
   ~b_tree() { _cleanup(); }
 };
 
