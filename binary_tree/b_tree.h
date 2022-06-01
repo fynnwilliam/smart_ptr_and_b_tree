@@ -22,9 +22,11 @@ public:
 class b_tree {
 private:
   node *root_{nullptr};
+  std::unordered_set<int> set_;
 
   void _cleanup(node *n) {
-    if (!n) return;
+    if (!n)
+      return;
 
     _cleanup(n->left);
     _cleanup(n->right);
@@ -37,10 +39,62 @@ private:
     root_ = nullptr;
   }
 
-public:
+  node *left_node(node *n) {
+    std::mt19937 g(std::random_device{}());
+    std::uniform_int_distribution<int> d(n->key - 5, n->key - 1);
 
-  explicit b_tree(int r) : root_{new node{r}} {}
-  node* root() const { return root_; }
+    while (true) {
+      if (int a{d(g)}; !set_.count(a)) {
+        if (!left_side(n) && a < 20) continue;
+
+        set_.insert(a);
+        return new node(a);
+      }
+    }
+  }
+
+  node *right_node(node *n) {
+    std::mt19937 g(std::random_device{}());
+    std::uniform_int_distribution<int> d(n->key + 1, n->key + 10);
+
+    while (true) {
+      if (int a{d(g)}; !set_.count(a)) {
+        if (left_side(n) && a > 20) continue;
+
+        set_.insert(a);
+        return new node(a);
+      }
+    }
+  }
+
+  bool left_side(node *n) {
+    static node *prev_node{n};
+
+    if (!n->parent && !n->left)
+      return n->left == nullptr;
+    if (!n->parent && n->left)
+      return n->left->key == prev_node->key;
+
+    prev_node = n;
+    return left_side(n->parent);
+  }
+
+public:
+  explicit b_tree(int r) : root_{new node{r}}, set_{r} {}
+
+  node *root() const { return root_; }
+
+  void build(node *n, std::size_t height) {
+    if (n && height) {
+      n->left = left_node(n);
+      n->right = right_node(n);
+      --height;
+
+      build(n->left, height);
+      build(n->right, height);
+    }
+  }
+
   ~b_tree() { _cleanup(); }
 };
 
@@ -56,7 +110,8 @@ node *climb(node *n) {
 }
 
 node *in_order_successor(node *n) {
-  if (!n) return nullptr;
+  if (!n)
+    return nullptr;
 
   node *u = !n->right ? n : leftmost_key(n->right);
 
