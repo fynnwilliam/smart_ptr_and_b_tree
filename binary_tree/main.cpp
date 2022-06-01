@@ -69,8 +69,8 @@ void print(node *n) {
 int main() {
   b_tree b{20};
 
-  build(b.root, 3);
-  print(b.root);
+  build(b.root(), 3);
+  print(b.root());
 
   std::cout << '\n';
 }

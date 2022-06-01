@@ -21,6 +21,7 @@ public:
 
 class b_tree {
 private:
+  node *root_{nullptr};
 
   void _cleanup(node *n) {
     if (!n) return;
@@ -32,15 +33,14 @@ private:
   }
 
   void _cleanup() {
-    _cleanup(root);
-    root = nullptr;
+    _cleanup(root_);
+    root_ = nullptr;
   }
 
 public:
-  node *root;
 
-  b_tree() : root{nullptr} {}
-  explicit b_tree(int r) : root{new node{r}} {}
+  explicit b_tree(int r) : root_{new node{r}} {}
+  node* root() const { return root_; }
   ~b_tree() { _cleanup(); }
 };
 
