@@ -1,4 +1,5 @@
-#include <iostream>
+#include <random>
+#include <unordered_set>
 
 class node {
 public:
@@ -71,9 +72,9 @@ private:
     static node *prev_node{n};
 
     if (!n->parent && !n->left)
-      return n->left == nullptr;
+      return true;
     if (!n->parent && n->left)
-      return n->left->key == prev_node->key;
+      return n->left == prev_node;
 
     prev_node = n;
     return left_side(n->parent);
